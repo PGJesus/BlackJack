@@ -74,9 +74,6 @@ function pull() {
 }
 
 function deal() {
-    playerHand = [];
-    dealerHand = [];
-
     playerHand.push(pull());
     dealerHand.push(pull());
     playerHand.push(pull());
@@ -94,4 +91,30 @@ function deal() {
     betInput.style.visibility = "hidden";
     hitbutton.style.visibility = "visible";
     standbutton.style.visibility = "visible";
+
+    pointrefresh();
+}
+
+function pointValue(array) {
+    let point = 0;
+    for (const a of array) {
+        let value = a.split("_")[0];
+        if (value === "jack" || value === "queen" || value === "king") {
+            point += 10;
+        } else if (value === "ace") {
+            if (point + 11 > 21) {
+                point ++;
+            } else {
+                point += 11;
+            }
+        } else {
+            point += parseInt(value);
+        }
+    }
+    return point;
+}
+
+function pointrefresh() {
+    document.getElementById("dealer-point").innerText = "Dealer: " + pointValue(dealerHand);
+    document.getElementById("player-point").innerText = "Player: " + pointValue(playerHand);
 }
